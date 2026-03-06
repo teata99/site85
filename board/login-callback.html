@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>로그인 처리 중...</title>
+</head>
+<body>
+    <div style="text-align: center; margin-top: 50px;">
+        <h2>로그인 중입니다. 잠시만 기다려주세요...</h2>
+        <div class="spinner"></div>
+    </div>
+
+<script>
+  window.onload = async () => {
+    const code = new URLSearchParams(window.location.search).get('code');
+
+    if (!code) {
+      alert("로그인에 실패했습니다. (code 없음)");
+      location.href = "/board/list.html";
+      return;
+    }
+
+    try {
+      const res = await fetch(`https://site85.vercel.app/api/get-github-token?code=${code}`);
+      const data = await res.json();
+
+      if (data.access_token) {
+        localStorage.setItem('github_token', data.access_token);
+        const userRes = await fetch('https://api.github.com/user', {
+            headers: { Authorization: `token ${data.access_token}` }
+        });
+
+        const userData = await userRes.json();
+        localStorage.setItem('user_info', JSON.stringify(userData));
+
+        location.href = "/board/list.html";
+      }
+    } catch (error) {
+        console.error(error);
+        alert("로그인 처리 중 오류가 발생했습니다.");
+        location.href = "/board/list.html";
+
+    }
+
+  };
+</script>
+
+</body>
+</html>

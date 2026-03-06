@@ -22,14 +22,14 @@
       
       <div class="mb-4">
         <h2 class="fw-bold text-dark">
-          <i class="bi bi-pencil-square text-primary"></i> 새 게시글 작성
+          <i class="bi bi-pencil-square text-success"></i> 게시글 수정
         </h2>
-        <p class="text-muted">GitHub Issues를 통해 안전하게 게시됩니다.</p>
+        <p class="text-muted">기존 내용을 수정하여 다시 게시합니다.</p>
       </div>
 
       <hr>
 
-      <form id="writeForm">
+      <form id="editForm">
         <div class="mb-3">
           <label for="title" class="form-label fw-bold">제목</label>
           <input type="text" class="form-control form-control-lg" id="title" placeholder="제목을 입력하세요" required>
@@ -41,9 +41,9 @@
         </div>
 
         <div class="d-flex gap-2 justify-content-end">
-          <a href="/board/list.html" class="btn btn-outline-secondary px-4">취소</a>
-          <button type="button" id="submitBtn" class="btn btn-primary px-4" onclick="submitPost()">
-            <span id="btnText">등록하기</span>
+          <button type="button" class="btn btn-outline-secondary px-4" onclick="history.back()">취소</button>
+          <button type="button" id="submitBtn" class="btn btn-success px-4" onclick="updatePost()">
+            <span id="btnText">수정 완료</span>
             <span id="btnLoader" class="spinner-border spinner-border-sm d-none" role="status"></span>
           </button>
         </div>
@@ -75,23 +75,50 @@ fetch("/sidebar.html")
 </script>
 
 <script>
-  window.onload = function() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const issueNumber = urlParams.get('id');
+
+  async function loadPostData() {
     const userInfo = localStorage.getItem('user_info');
 
     if (!userInfo) {
-      alert("로그인이 필요한 서비스입니다.");
-      location.href = "/board/list.html"; 
-      return;
+        alert("로그인이 필요합니다.");
+        location.href = "/board/list.html";
+        return;
     }
-  };
-</script>
 
-<script>
-  async function submitPost() {
+    const loginUser = JSON.parse(userInfo).login;
+
+    if (!issueNumber) {
+        alert("수정할 글 번호가 없습니다.");
+        location.href = "/board/list.html";
+        return;
+    }
+
+    try {
+      const response = await fetch(`https://api.github.com/repos/teata99/site85/issues/${issueNumber}`);
+      if (!response.ok) throw new Error("글을 불러올 수 없습니다.");
+
+      const post = await response.json();
+
+      if (post.user.login !== loginUser) {
+            alert("본인의 글만 수정할 수 있습니다.");
+            location.href = "/board/list.html";
+            return;
+      }
+
+      document.getElementById('title').value = post.title;
+      document.getElementById('content').value = post.body;
+
+    } catch (error) {
+      console.error(error);
+      alert("데이터를 가져오는 중 오류가 발생했습니다.");
+    }
+  }
+
+  async function updatePost() {
     const title = document.getElementById('title').value;
     const content = document.getElementById('content').value;
-    const userInfo = JSON.parse(localStorage.getItem('user_info'));
-
     const btn = document.getElementById('submitBtn');
     const btnText = document.getElementById('btnText');
     const btnLoader = document.getElementById('btnLoader');
@@ -102,42 +129,39 @@ fetch("/sidebar.html")
     }
 
     btn.disabled = true;
-    btnText.innerText = "전송 중...";
+    btnText.innerText = "수정 중...";
     btnLoader.classList.remove('d-none');
 
     try {
-      const response = await fetch('https://site85.vercel.app/api/create-post', {
+      const response = await fetch('https://site85.vercel.app/api/update-post', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
-          title: title, 
-          content: content,
-          author: userInfo.login,
-          avatar: userInfo.avatar_url 
+            issueNumber: issueNumber, 
+            title: title, 
+            content: content 
         })
       });
 
-      const result = await response.json();
-
       if (response.ok) {
-        alert("등록되었습니다!\n반영되는 데 시간이 걸릴수 있습니다.\n반영이 안된 경우 새로고침을 눌러주세요.");
-        location.href = "/board/list.html";
+        alert("수정 되었습니다.\n반영되는 데 시간이 걸릴수 있습니다.\n반영이 안된 경우 새로고침을 눌러주세요.");
+        location.href = `/board/view.html?id=${issueNumber}`; // 수정한 글로 돌아가기
       } else {
-        console.error("서버 에러:", result);
-        alert("등록 실패");
+        const result = await response.json();
+        alert("수정 실패: " + (result.message || "오류 발생"));
       }
-    
-    } catch(error) {
-        console.error("통신 에러:", error);
-        alert("서버와 통신하는 중 오류가 발생했습니다.");
-    
+    } catch (error) {
+      console.error(error);
+      alert("서버 통신 에러");
+
     } finally {
       btn.disabled = false;
-      btnText.innerText = "등록하기";
+      btnText.innerText = "수정 완료";
       btnLoader.classList.add('d-none');
     }
   }
 
+  window.onload = loadPostData;
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

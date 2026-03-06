@@ -4,7 +4,7 @@ export default async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
     if (req.method === 'OPTIONS') {
-        return res.status(200).end();
+        return res.status(204).end();
     }
 
     if (req.method !== 'POST') {
@@ -16,14 +16,21 @@ export default async function handler(req, res) {
         const TOKEN = process.env.site85_token;
         const formattedBody = `${content}\n\n---\n> 작성자: ![avatar](${avatar}) ${author}`;
 
-        const response = await fetch('https://api.github.com/repos/teata99/site85/issues', {
-            method: 'POST',
+        if (!issueNumber) {
+            return res.status(400).json({ message: "issueNumber가 누락되었습니다." });
+        }
+
+        const response = await fetch(`https://api.github.com/repos/teata99/site85/issues/${issueNumber}`, {
+            method: 'PATCH', 
             headers: {
                 "Authorization": `token ${TOKEN}`,
                 "Content-Type": "application/json",
                 "Accept": "application/vnd.github.v3+json"
             },
-            body: JSON.stringify({ title: title, body: formattedBody })
+            body: JSON.stringify({ 
+                title: title, 
+                body: formattedBody 
+            })
         });
 
         const data = await response.json();
@@ -34,5 +41,3 @@ export default async function handler(req, res) {
         return res.status(500).json({ message: error.message });
     }
 }
-
-            
