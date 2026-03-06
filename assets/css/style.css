@@ -1,0 +1,55 @@
+:root {
+  --sidebar-width: 240px;
+}
+
+/* 전체 레이아웃 */
+body {
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* 사이드바 */
+.sidebar {
+  width: var(--sidebar-width);
+  min-width: var(--sidebar-width);
+  max-width: var(--sidebar-width);
+}
+
+/* Topbar 높이 보정 (선택) */
+.navbar {
+  min-height: 56px;
+}
+
+/* 메인 콘텐츠 */
+.main {
+  flex-grow: 1;
+  padding-top: 1rem;
+}
+
+/* 사이드바 메뉴 */
+.sidebar .nav-link {
+  color: #adb5bd;
+}
+
+.sidebar .nav-link.active,
+.sidebar .nav-link:hover {
+  color: #fff;
+  background-color: #495057;
+}
+
+/* 아이콘 크게 */
+.icon-lg {
+  font-size: 3rem;
+}
+
+/* 모바일 */
+@media (max-width: 767px) {
+  .sidebar {
+    width: var(--sidebar-width);
+  }
+}

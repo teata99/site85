@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <title>San San Project - List</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="/assets/css/style.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+<div id="topbar"></div>
+
+<div class="d-flex">
+  <div id="sidebar"></div>
+
+  <main class="flex-grow-1 p-4">
+    <div class="container bg-white shadow-sm rounded p-4" style="max-width: 800px;">
+      
+      <div class="mb-4">
+        <h2 class="fw-bold text-dark">
+          <i class="bi bi-pencil-square text-primary"></i> 새 게시글 작성
+        </h2>
+        <p class="text-muted">GitHub Issues를 통해 안전하게 게시됩니다.</p>
+      </div>
+
+      <hr>
+
+      <form id="writeForm">
+        <div class="mb-3">
+          <label for="title" class="form-label fw-bold">제목</label>
+          <input type="text" class="form-control form-control-lg" id="title" placeholder="제목을 입력하세요" required>
+        </div>
+
+        <div class="mb-4">
+          <label for="content" class="form-label fw-bold">내용</label>
+          <textarea class="form-control" id="content" rows="10" placeholder="내용을 상세히 입력하세요" required></textarea>
+        </div>
+
+        <div class="d-flex gap-2 justify-content-end">
+          <a href="/board/list.html" class="btn btn-outline-secondary px-4">취소</a>
+          <button type="button" id="submitBtn" class="btn btn-primary px-4" onclick="submitPost()">
+            <span id="btnText">등록하기</span>
+            <span id="btnLoader" class="spinner-border spinner-border-sm d-none" role="status"></span>
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </main>
+</div>      
+
+<script>
+fetch("/topbar.html")
+  .then(res => res.text())
+  .then(html => {
+    document.getElementById("topbar").innerHTML = html;
+  });
+
+fetch("/sidebar.html")
+  .then(res => res.text())
+  .then(html => {
+    const sidebar = document.getElementById("sidebar");
+    sidebar.innerHTML = html;
+
+    document.querySelectorAll('.nav-link').forEach(link => {
+      if (link.getAttribute("href") === location.pathname.split('/').pop()) {
+        link.classList.add('active');
+      }
+    });
+  });
+</script>
+
+<script>
+  async function submitPost() {
+    const title = document.getElementById('title').value;
+    const content = document.getElementById('content').value;
+    const btn = document.getElementById('submitBtn');
+    const btnText = document.getElementById('btnText');
+    const btnLoader = document.getElementById('btnLoader');
+
+    if (!title.trim() || !content.trim()) {
+      alert("제목과 내용을 모두 입력해주세요.");
+      return;
+    }
+
+    btn.disabled = true;
+    btnText.innerText = "전송 중...";
+    btnLoader.classList.remove('d-none');
+
+    try {
+      const response = await fetch('https://site82.netlify.app/.netlify/functions/create-post', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, content })
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        alert("성공적으로 등록되었습니다!");
+        location.href = "list.html";
+      } else {
+        console.error("서버 에러:", result);
+        alert("등록 실패");
+      }
+    
+    } catch(error) {
+        console.error("통신 에러:", error);
+        alert("서버와 통신하는 중 오류가 발생했습니다.");
+    
+    } finally {
+      btn.disabled = false;
+      btnText.innerText = "등록하기";
+      btnLoader.classList.add('d-none');
+    }
+  }
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
