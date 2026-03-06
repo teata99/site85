@@ -12,9 +12,8 @@ export default async function handler(req, res) {
     }
 
     try {
-        const { title, content, author, avatar } = req.body;
+        const { issueNumber, title, content } = JSON.parse(req.body);
         const TOKEN = process.env.site85_token;
-        const formattedBody = `${content}\n\n---\n> 작성자: ![avatar](${avatar}) ${author}`;
 
         if (!issueNumber) {
             return res.status(400).json({ message: "issueNumber가 누락되었습니다." });
@@ -29,7 +28,7 @@ export default async function handler(req, res) {
             },
             body: JSON.stringify({ 
                 title: title, 
-                body: formattedBody 
+                body: content 
             })
         });
 

@@ -105,6 +105,8 @@ fetch("/sidebar.html")
     btnText.innerText = "전송 중...";
     btnLoader.classList.remove('d-none');
 
+    content = `${content}\n\n---\n> 작성자: ${userInfo.login}`;
+
     try {
       const response = await fetch('https://site85.vercel.app/api/create-post', {
         method: 'POST',

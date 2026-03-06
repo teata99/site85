@@ -14,7 +14,6 @@ export default async function handler(req, res) {
     try {
         const { title, content, author, avatar } = req.body;
         const TOKEN = process.env.site85_token;
-        const formattedBody = `${content}\n\n---\n> 작성자: ![avatar](${avatar}) ${author}`;
 
         const response = await fetch('https://api.github.com/repos/teata99/site85/issues', {
             method: 'POST',
@@ -23,7 +22,7 @@ export default async function handler(req, res) {
                 "Content-Type": "application/json",
                 "Accept": "application/vnd.github.v3+json"
             },
-            body: JSON.stringify({ title: title, body: formattedBody })
+            body: JSON.stringify({ title: title, body: content })
         });
 
         const data = await response.json();

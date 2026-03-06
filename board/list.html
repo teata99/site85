@@ -151,11 +151,8 @@ fetch("/sidebar.html")
 
       currentPage = page;
       document.getElementById('current-page-num').innerText = currentPage;
-
       document.getElementById('prev-btn').classList.toggle('disabled', currentPage === 1);
-
       document.getElementById('next-btn').classList.toggle('disabled', posts.length < perPage);
-
 
     } catch (error) {
       console.error("데이터 로드 실패:", error);
