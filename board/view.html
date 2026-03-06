@@ -159,6 +159,7 @@ fetch("/sidebar.html")
     try {
         const response = await fetch('https://site85.vercel.app/api/delete-post', {
             method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ issueNumber: issueNumber })
         });
 
