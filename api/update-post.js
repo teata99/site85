@@ -12,7 +12,7 @@ export default async function handler(req, res) {
     }
 
     try {
-        const { issueNumber, title, content } = JSON.parse(req.body);
+        const { issueNumber, title, content } = req.body;
         const TOKEN = process.env.site85_token;
 
         if (!issueNumber) {
