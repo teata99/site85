@@ -92,7 +92,7 @@ fetch("/sidebar.html")
     btnLoader.classList.remove('d-none');
 
     try {
-      const response = await fetch('https://site82.netlify.app/.netlify/functions/create-post', {
+      const response = await fetch('https://site85.vercel.app/api/create-post', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title, content })

@@ -96,7 +96,7 @@ fetch("/sidebar.html")
 
   async function loadPosts(page) {
     try {
-      const response = await fetch(`https://api.github.com/repos/teata99/site82/issues?per_page=${perPage}&page=${page}`);
+      const response = await fetch(`https://api.github.com/repos/teata99/site85/issues?per_page=${perPage}&page=${page}`);
       const posts = await response.json();
 
       const listElement = document.getElementById('post-list');
