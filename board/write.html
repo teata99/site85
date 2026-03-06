@@ -88,8 +88,8 @@ fetch("/sidebar.html")
 
 <script>
   async function submitPost() {
-    const title = document.getElementById('title').value;
-    const content = document.getElementById('content').value;
+    let title = document.getElementById('title').value;
+    let content = document.getElementById('content').value;
     const userInfo = JSON.parse(localStorage.getItem('user_info'));
 
     const btn = document.getElementById('submitBtn');
