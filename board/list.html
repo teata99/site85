@@ -52,14 +52,14 @@
           <thead class="table-light">
             <tr>
               <th style="width: 10%">번호</th>
-              <th style="width: 50%">제목</th>
-              <th style="width: 20%">작성자</th>
+              <th style="width: 70%">제목</th>
+              <!--th style="width: 20%">작성자</th-->
               <th style="width: 20%">날짜</th>
             </tr>
           </thead>
           <tbody id="post-list">
             <tr>
-              <td colspan="4" class="text-center py-5 text-secondary">
+              <td colspan="3" class="text-center py-5 text-secondary">
                 <div class="spinner-border spinner-border-sm" role="status"></div>
                 게시글을 불러오는 중입니다...
               </td>
@@ -141,10 +141,10 @@ fetch("/sidebar.html")
               ${post.comments > 0 ? `<span class="badge rounded-pill bg-light text-primary border border-primary ms-1">${post.comments}</span>` : ''}
             </a>
           </td>
-          <td>
+          <!--td>
             <img src="${post.user.avatar_url}" width="20" height="20" class="rounded-circle me-1">
             ${post.user.login}
-          </td>
+          </td-->
           <td class="text-secondary">${formatDate(post.created_at)}</td>
         </tr>
       `).join('');

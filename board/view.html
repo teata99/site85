@@ -111,7 +111,7 @@ fetch("/sidebar.html")
       if (!response.ok) throw new Error("글을 찾을 수 없습니다.");
 
       document.getElementById('post-title').innerText = post.title;
-      document.getElementById('post-author').innerText = post.user.login;
+      //document.getElementById('post-author').innerText = post.user.login;
       document.getElementById('post-date').innerText = new Date(post.created_at).toLocaleString();
       document.getElementById('post-content').innerText = post.body || "";
 
