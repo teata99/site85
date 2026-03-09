@@ -4,5 +4,5 @@ router = APIRouter()
 
 @router.get("/")
 async def get_users():
-    return {"message": "유저 목록입니다."}
+    return {"message": "유저 목록입니다..."}
 
