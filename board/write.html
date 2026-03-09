@@ -108,7 +108,7 @@ fetch("/sidebar.html")
     content = `${content}\n\n---\n> 작성자: ${userInfo.login}`;
 
     try {
-      const response = await fetch('https://site85.vercel.app/api/create-post', {
+      const response = await fetch('https://site85.vercel.app/api/board/create-post', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
