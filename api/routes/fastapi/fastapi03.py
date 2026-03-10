@@ -12,8 +12,6 @@ load_dotenv(dotenv_path=env_path)
 
 router = APIRouter()
 
-router.add_middleware(SessionMiddleware, secret_key=os.getenv("SECRET_KEY"))
-
 oauth = OAuth()
 oauth.register(
     name='google',
