@@ -37,7 +37,7 @@
       <div id="login-section" class="card auth-card shadow-sm p-4 text-center">
           <h4 class="mb-4">서비스를 시작하려면 로그인하세요</h4>
           <div class="d-grid">
-              <a href="/fastapi/fastapi03/login" class="btn btn-outline-dark btn-lg d-flex align-items-center justify-content-center gap-2">
+              <a href="/api/fastapi/fastapi03/login" class="btn btn-outline-dark btn-lg d-flex align-items-center justify-content-center gap-2">
                   <i class="bi bi-google"></i> Google로 계속하기
               </a>
           </div>
@@ -53,7 +53,7 @@
                       <small id="user-email" class="text-muted">user@example.com</small>
                   </div>
               </div>
-              <a href="/fastapi/fastapi03/logout" class="btn btn-sm btn-outline-danger">로그아웃</a>
+              <a href="/api/fastapi/fastapi03/logout" class="btn btn-sm btn-outline-danger">로그아웃</a>
           </div>
       </div>
   </div>
@@ -86,7 +86,7 @@ fetch("/sidebar.html")
 <script>
     async function checkAuth() {
         try {
-            const response = await fetch('/fastapi/fastapi03/read'); 
+            const response = await fetch('/api/fastapi/fastapi03/read'); 
             if (response.ok) {
                 const user = await response.json();
                 showApp(user);
