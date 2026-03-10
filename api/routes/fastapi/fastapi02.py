@@ -79,5 +79,3 @@ async def read_data(db: Session = Depends(db_instance.get_db)):
             "message": str(e)
         }
 
-
-
