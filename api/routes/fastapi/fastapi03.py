@@ -37,6 +37,11 @@ async def auth(request: Request):
     
     return {"message": "Login failed"}
 
+@router.get("/logout")
+async def logout(request: Request):
+    request.session.pop('user', None)
+    return RedirectResponse(url='/fastapi/fastapi03.html')
+
 @router.get("/read")
 async def read_user_info(request: Request):
     user = request.session.get('user')
