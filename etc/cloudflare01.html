@@ -50,10 +50,10 @@
                     <div class="cf-turnstile" data-sitekey="0x4AAAAAACpdNBH922G9gwNA" data-callback="onVerify"></div>
                     `;
 
-                const widgetContainer = document.querySelector("#widget-area");
+                const widgetArea = await waitForElement("#widget-area");
 
-                if (widgetContainer && window.turnstile) {
-                    turnstile.render(widgetContainer, {
+                if (widgetArea && window.turnstile) {
+                    turnstile.render(widgetArea, {
                     sitekey: '0x4AAAAAACpdNBH922G9gwNA',
                     callback: onVerify,
                   });
@@ -71,6 +71,30 @@
             if (res.ok) {
                 location.reload(); 
             }
+        }
+
+        function waitForElement(selector) {
+          return new Promise(resolve => {
+            const element = document.querySelector(selector);
+
+            if (element) {
+                return resolve(element);
+            }
+
+            const observer = new MutationObserver(mutations => {
+              const target = document.querySelector(selector);
+
+              if (target) {
+                resolve(target);
+                observer.disconnect(); 
+              }
+            });
+
+            observer.observe(document.body, {
+            childList: true,
+            subtree: true
+            });
+          });
         }
 
         checkAuth();
