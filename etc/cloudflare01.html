@@ -34,8 +34,8 @@
   <main class="flex-grow-1 p-4">
 
     <div id="auth-container">
-        <h2>잠시만 기다려주세요...</h2>
-        <div id="widget-area"></div>
+        <h2>보안 확인: 아래 체크박스를 클릭하세요.</h2>
+        <div id="turnstile-widget"></div>
     </div>
     
     <script>
@@ -47,11 +47,6 @@
             } else {
                 
               const container = document.getElementById('auth-container');
-              container.innerHTML = `
-                  <h3 class="mb-3">보안 확인: 아래 체크박스를 클릭하세요.</h3>
-                  <div id="turnstile-widget"></div>
-              `;
-
               const widget = document.getElementById("turnstile-widget");
 
               turnstile.render(widget, {
