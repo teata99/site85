@@ -49,12 +49,13 @@
                     <h3>사람인지 확인하십시오.</h3>
                     <div class="cf-turnstile" data-sitekey="0x4AAAAAACpdNBH922G9gwNA" data-callback="onVerify"></div>
                     `;
-                    
+
                 if (window.turnstile) {
                   turnstile.render('#my-widget', {
                   sitekey: '0x4AAAAAACpdNBH922G9gwNA',
                   callback: onVerify,
                   });
+                }
             }
         }
 
