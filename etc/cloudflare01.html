@@ -50,6 +50,8 @@
                     <div class="cf-turnstile" data-sitekey="0x4AAAAAACpdNBH922G9gwNA" data-callback="onVerify"></div>
                     `;
 
+                if (window.turnstile) turnstile.render('.cf-turnstile');    
+                /*    
                 const widgetArea = await waitForElement("#widget-area");
 
                 if (widgetArea && window.turnstile) {
@@ -58,6 +60,7 @@
                     callback: onVerify,
                   });
                 }
+                */  
             }
         }
 
@@ -124,23 +127,6 @@ fetch("/sidebar.html")
     });
   });
 </script>  
-
-<script>
-    function onVerify(token) {
-        fetch('/api/cloudflare/verify', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ token: token })
-        }).then(res => {
-                if (res.ok) {
-                    location.reload(); 
-                }
-        });
-    }
-</script>
-
-
-
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
