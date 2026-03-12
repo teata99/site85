@@ -50,7 +50,11 @@
                     <div class="cf-turnstile" data-sitekey="0x4AAAAAACpdNBH922G9gwNA" data-callback="onVerify"></div>
                     `;
 
-                if (window.turnstile) turnstile.render('.cf-turnstile');    
+                if (window.turnstile) {
+                    turnstile.implicitRender(); 
+                }
+
+                //if (window.turnstile) turnstile.render('.cf-turnstile');    
                 /*    
                 const widgetArea = await waitForElement("#widget-area");
 
