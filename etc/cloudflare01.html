@@ -52,12 +52,10 @@
                   <div id="turnstile-widget"></div>
               `;
 
-              setTimeout(() => {
-                turnstile.render('#widget-area', {
-                  sitekey: '0x4AAAAAACpdNBH922G9gwNA',
-                  callback: onVerify
-                });
-              }, 0);
+              turnstile.render(widget, {
+                sitekey: "0x4AAAAAACpdNBH922G9gwNA",
+                callback: onVerify
+              });
               
             }
         }
