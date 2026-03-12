@@ -20,7 +20,7 @@
     }
   </style>
 
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onTurnstileLoad" defer></script>
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" defer></script>
 
 </head>
 
@@ -46,10 +46,7 @@
                 document.getElementById("auth-container").innerHTML = data;
             } else {
                 
-              const container = document.getElementById('auth-container');
-              const widget = document.getElementById("turnstile-widget");
-
-              turnstile.render(widget, {
+              turnstile.render("#turnstile-widget", {
                 sitekey: "0x4AAAAAACpdNBH922G9gwNA",
                 callback: onVerify
               });
@@ -65,13 +62,11 @@
             });
 
             if (res.ok) {
-                location.reload(); 
+                location.href = location.pathname;
             }
         }
 
-        function onTurnstileLoad() {
-          checkAuth();
-        }
+        window.addEventListener("DOMContentLoaded", checkAuth);
 
     </script>    
 
