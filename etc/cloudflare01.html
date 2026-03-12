@@ -47,15 +47,20 @@
             } else {
                 document.getElementById('auth-container').innerHTML = `
                     <h3>사람인지 확인하십시오.</h3>
-                    <div class="cf-turnstile" data-sitekey="0x4AAAAAACpdNBH922G9gwNA" data-callback="onVerify"></div>
+                    <div class="cf-turnstile" 
+                         data-sitekey="0x4AAAAAACpdNBH922G9gwNA" 
+                         data-callback="onVerify"></div>
+                    </div>
                     `;
+
+                /*      
 
                 if (window.turnstile) {
                     turnstile.implicitRender(); 
                 }
 
                 //if (window.turnstile) turnstile.render('.cf-turnstile');    
-                /*    
+                  
                 const widgetArea = await waitForElement("#widget-area");
 
                 if (widgetArea && window.turnstile) {
@@ -104,7 +109,7 @@
           });
         }
 
-        checkAuth();
+        window.addEventListener('load', checkAuth);
     </script>    
 
     </div>
