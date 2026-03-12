@@ -20,7 +20,7 @@
     }
   </style>
 
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" defer></script>
 
 </head>
 
@@ -45,41 +45,18 @@
                 const data = await res.text();
                 document.body.innerHTML = data;
             } else {
-                const container = document.getElementById('auth-container');
-                const wrapper = document.createElement('div');
-
-                wrapper.innerHTML = `
-                    <h3 class="mb-3">보안 확인: 아래 체크박스를 클릭하세요.</h3>
-                    <div class="cf-turnstile" 
-                         data-sitekey="0x4AAAAAACpdNBH922G9gwNA" 
-                         data-callback="onVerify"></div>
-                `;
                 
-                container.innerHTML = ''; 
-                container.appendChild(wrapper);
+              const container = document.getElementById('auth-container');
+              container.innerHTML = `
+                  <h3 class="mb-3">보안 확인: 아래 체크박스를 클릭하세요.</h3>
+                  <div id="turnstile-widget"></div>
+              `;
 
-                if (window.turnstile) {
-                    turnstile.implicitRender();
-                }
-                
-
-                /*      
-
-                if (window.turnstile) {
-                    turnstile.implicitRender(); 
-                }
-
-                //if (window.turnstile) turnstile.render('.cf-turnstile');    
-                  
-                const widgetArea = await waitForElement("#widget-area");
-
-                if (widgetArea && window.turnstile) {
-                    turnstile.render(widgetArea, {
-                    sitekey: '0x4AAAAAACpdNBH922G9gwNA',
-                    callback: onVerify,
-                  });
-                }
-                */  
+              turnstile.render('#turnstile-widget', {
+                  sitekey: '0x4AAAAAACpdNBH922G9gwNA',
+                  callback: onVerify
+              });
+              
             }
         }
 
@@ -93,30 +70,6 @@
             if (res.ok) {
                 location.reload(); 
             }
-        }
-
-        function waitForElement(selector) {
-          return new Promise(resolve => {
-            const element = document.querySelector(selector);
-
-            if (element) {
-                return resolve(element);
-            }
-
-            const observer = new MutationObserver(mutations => {
-            const target = document.querySelector(selector);
-
-            if (target) {
-              resolve(target);
-              observer.disconnect(); 
-            }
-          });
-
-            observer.observe(document.body, {
-            childList: true,
-            subtree: true
-            });
-          });
         }
 
         window.addEventListener('DOMContentLoaded', checkAuth);
